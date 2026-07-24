@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Gurukul",
+  "description": "Your AI-powered sanctuary for learning. Master STEM subjects with adaptive flowcharts, interactive quizzes, and personalized mentorship.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

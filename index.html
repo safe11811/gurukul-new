@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Gurukul</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Patrick+Hand&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous">
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+              hand: ['Patrick Hand', 'cursive'],
+              note: ['Caveat', 'cursive'],
+            },
+            colors: {
+              background: 'rgb(var(--color-background) / <alpha-value>)',
+              surface: 'rgb(var(--color-surface) / <alpha-value>)',
+              surfaceHighlight: 'rgb(var(--color-surface-highlight) / <alpha-value>)',
+              text: {
+                primary: 'rgb(var(--color-text-primary) / <alpha-value>)',
+                secondary: 'rgb(var(--color-text-secondary) / <alpha-value>)',
+                muted: 'rgb(var(--color-text-muted) / <alpha-value>)',
+              },
+              border: 'rgb(var(--color-border) / <alpha-value>)',
+              physics: {
+                primary: '#3b82f6', // Electric Blue
+                secondary: '#8b5cf6', // Purple
+              },
+              chemistry: {
+                primary: '#10b981', // Neon Green
+                secondary: '#f97316', // Orange
+              },
+              math: {
+                primary: '#fbbf24', // Gold
+                secondary: '#06b6d4', // Cyan
+              },
+              english: {
+                primary: '#f59e0b', // Amber
+                secondary: '#fb7185', // Rose
+              },
+              cs: {
+                primary: '#22c55e', // Matrix Green
+                secondary: '#0ea5e9', // Cyber Blue
+              },
+            },
+            boxShadow: {
+              'glow': '0 0 10px rgba(255,255,255,0.05)',
+              'glow-accent': '0 0 15px currentColor',
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      :root {
+        /* Light Mode Defaults */
+        --color-background: 248 250 252; /* slate-50 */
+        --color-surface: 255 255 255; /* white */
+        --color-surface-highlight: 241 245 249; /* slate-100 */
+        --color-text-primary: 15 23 42; /* slate-900 */
+        --color-text-secondary: 51 65 85; /* slate-700 */
+        --color-text-muted: 100 116 139; /* slate-500 */
+        --color-border: 0 0 0; /* black base for borders */
+      }
+
+      .dark {
+        /* Dark Mode Defaults */
+        --color-background: 10 10 10;
+        --color-surface: 26 26 26;
+        --color-surface-highlight: 38 38 38;
+        --color-text-primary: 229 229 231; /* zinc-200 */
+        --color-text-secondary: 161 161 170; /* zinc-400 */
+        --color-text-muted: 82 82 91; /* zinc-600 */
+        --color-border: 255 255 255; /* white base for borders */
+      }
+
+      .neo-brutalism {
+        /* Neo Brutalism Pop Palette */
+        --color-background: 254 243 199; /* amber-100 warm canvas */
+        --color-surface: 255 255 255; /* solid sharp white */
+        --color-surface-highlight: 254 226 226; /* soft pastel highlight */
+        --color-text-primary: 0 0 0; /* solid high-contrast black */
+        --color-text-secondary: 24 24 27; /* zinc-900 */
+        --color-text-muted: 71 85 105; /* slate-600 */
+        --color-border: 0 0 0; /* solid black borders */
+      }
+
+      .neo-brutalism .bg-surface {
+        border: 2px solid #000;
+        box-shadow: 4px 4px 0px 0px #000;
+      }
+
+      .neo-brutalism button {
+        border-color: #000;
+      }
+
+      .neo-brutalism button:hover {
+        box-shadow: 2px 2px 0px 0px #000;
+      }
+
+      .neo-brutalism button:active {
+        transform: translate(2px, 2px);
+        box-shadow: 0px 0px 0px 0px #000;
+      }
+
+      .neo-brutalism input,
+      .neo-brutalism select,
+      .neo-brutalism textarea {
+        border: 2px solid #000;
+      }
+
+      body {
+        margin: 0;
+        background-color: rgb(var(--color-background));
+        color: rgb(var(--color-text-primary));
+        transition: background-color 0.3s ease, color 0.3s ease;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgb(var(--color-background)); 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgb(var(--color-border), 0.2); 
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgb(var(--color-border), 0.4); 
+      }
+      
+      .glass {
+        background: rgba(26, 26, 26, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      /* Notebook Grid */
+      .bg-grid-dark {
+        background-image: radial-gradient(rgb(var(--color-border), 0.2) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      
+      /* LaTeX rendered output adjustments */
+      .katex { font-size: 1.1em; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
+    "canvas-confetti": "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/+esm",
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "vite": "https://aistudiocdn.com/vite@^7.2.7",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.2",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
