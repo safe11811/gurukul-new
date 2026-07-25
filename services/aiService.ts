@@ -1,5 +1,21 @@
 import { ProblemSolution, QuizQuestion, SubjectType, DifficultyLevel, Flashcard, ClassLevel, QuizParams } from "../types";
 
+// --- DAILY GOALS TYPES ---
+export interface GoalItem {
+  id: string;
+  text: string;
+  completed: boolean;
+  isAISuggested: boolean;
+}
+
+export interface DailyGoalContext {
+  subjects: SubjectType[];
+  classLevel?: ClassLevel;
+  masteryMap: Record<string, number>;
+  studyTimeMap: Record<string, number>;
+  streakCount: number;
+}
+
 // --- API CONFIGURATION ---
 // WARNING: This key is exposed client-side. Rotate it and proxy requests
 // through a backend / serverless function before shipping to production.
@@ -93,6 +109,16 @@ const getMockProject = (topic: string): string => {
     title: topic,
     content: "We are currently offline. Please check your internet connection to generate a human-like draft for your project."
   });
+};
+
+const getMockDailyGoals = (context: DailyGoalContext): string => {
+  const goals = context.subjects.slice(0, 3).map((sub, i) => ({
+    id: `ai-goal-${Date.now()}-${i}`,
+    text: `📖 Review ${sub} fundamentals for 20 minutes (Offline Mode)`,
+    completed: false,
+    isAISuggested: true
+  }));
+  return JSON.stringify(goals);
 };
 
 // --- HELPER: ROBUST JSON PARSER ---
@@ -493,4 +519,63 @@ export const generateHumanLikeDraft = async (
     return JSON.parse(getMockProject(topic));
   }
   return parsed;
+};
+
+export const generateAIDailyGoals = async (context: DailyGoalContext): Promise<GoalItem[]> => {
+  // Summarize mastery/study-time per subject so the model can prioritize
+  // weaker or neglected subjects rather than guessing blindly.
+  const subjectSummary = context.subjects
+    .map(sub => {
+      const mastery = context.masteryMap[sub] ?? 0;
+      const minutes = context.studyTimeMap[sub] ?? 0;
+      return `- ${sub}: mastery ${mastery}%, ${minutes} minutes studied recently`;
+    })
+    .join('\n  ');
+
+  const systemPrompt = `You are an expert academic coach creating a short, achievable daily study plan.
+  Your goal is to pick 3-4 concrete, specific tasks for today that prioritize subjects with LOWER mastery
+  or LESS recent study time, while still keeping variety across subjects when reasonable.
+  
+  RULES:
+  1. Each goal must be a single, concrete, actionable task (e.g. "Complete 10 practice problems on Thermodynamics"),
+     not a vague instruction (e.g. "Study Physics").
+  2. Prefix each goal text with one relevant emoji (e.g. 🎯, ⏱️, ⚡, 🔥, 🧪, 📖) followed by a space.
+  3. Keep each goal text under 100 characters.
+  4. Consider the student's current streak: ${context.streakCount} day(s). If the streak is long, you may include
+     one slightly more ambitious task to keep momentum.
+  5. Output ONLY a valid JSON array, nothing else.
+  
+  Schema:
+  [
+    { "text": "🎯 Goal description here" }
+  ]`;
+
+  const userPrompt = `Class Level: ${context.classLevel || 'Not specified'}
+  Streak: ${context.streakCount} day(s)
+  Subject Performance:
+  ${subjectSummary}
+  
+  Generate today's 3-4 recommended study goals based on this data.`;
+
+  const responseText = await callAI(
+    [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt }
+    ],
+    () => getMockDailyGoals(context),
+    MODEL_DEFAULT
+  );
+
+  let items = parseResponse(responseText);
+  if (!Array.isArray(items)) {
+    if (items && Array.isArray(items.goals)) items = items.goals;
+    else items = JSON.parse(getMockDailyGoals(context));
+  }
+
+  return items.map((item: any, i: number) => ({
+    id: item.id || `ai-goal-${Date.now()}-${i}`,
+    text: item.text,
+    completed: false,
+    isAISuggested: true
+  }));
 };
