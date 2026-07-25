@@ -2,7 +2,7 @@
 import { ProblemSolution, QuizQuestion, SubjectType, DifficultyLevel, Flashcard, ClassLevel, QuizParams } from "../types";
 
 // --- API CONFIGURATION ---
-const OPENROUTER_API_KEY = "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";
+const OPENROUTER_API_KEY = "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";
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 
