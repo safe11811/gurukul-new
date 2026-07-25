@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyD3Q8HOYbkuh-BA6bdlOxifP3iioUToS6A", // Fallback for local testing if env is missing
+  apiKey: "AIzaSyD3Q8HOYbkuh-BA6bdlOxifP3iioUToS6A",
   authDomain: "lumina-learn-safe.firebaseapp.com",
   projectId: "lumina-learn-safe",
   storageBucket: "lumina-learn-safe.appspot.com",
