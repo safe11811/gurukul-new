@@ -2,7 +2,9 @@
 import { ProblemSolution, QuizQuestion, SubjectType, DifficultyLevel, Flashcard, ClassLevel, QuizParams } from "../types";
 
 // --- API CONFIGURATION ---
-const OPENROUTER_URL = "/api/ai/completions";
+const OPENROUTER_API_KEY = "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";
+const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+
 
 // Models - Optimized for JSON reliability
 // Using Gemini 2.0 Flash Lite as default for better instruction following on JSON tasks
